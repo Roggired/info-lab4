@@ -1,0 +1,60 @@
+!!map {
+  !!str "day" : !!str "Monday",
+  !!str "NumberOfLessons" : !!str 8,
+  !!str "Lesson1" : !!map {
+    !!str "Time" : !!str "10.00-11.30",
+    !!str "Parity" : !!str "YES",
+    !!str "Address" : !!str "371Кронверкскийпр.д.49лит.А",
+    !!str "Subject" : !!str "ПРОГРАММИРОВАНИЕ(Лаб)",
+    !!str "Teacher" : !!str "ПисьмакАлексейЕвгеньевич"
+  },
+  !!str "Lesson2" : !!map {
+    !!str "Time" : !!str "10.00-11.30",
+    !!str "Parity" : !!str "NO",
+    !!str "Address" : !!str "372Кронверкскийпр.д.49лит.А",
+    !!str "Subject" : !!str "ОСНОВЫПРОФЕССИОНАЛЬНОЙДЕЯТЕЛЬНОСТИ(Лаб)",
+    !!str "Teacher" : !!str "ПерминовИльяВалентинович"
+  },
+  !!str "Lesson3" : !!map {
+    !!str "Time" : !!str "11.40-13.10",
+    !!str "Parity" : !!str "NO",
+    !!str "Address" : !!str "371Кронверкскийпр.д.49лит.А",
+    !!str "Subject" : !!str "ОСНОВЫПРОФЕССИОНАЛЬНОЙДЕЯТЕЛЬНОСТИ(Лаб)",
+    !!str "Teacher" : !!str "ПерминовИльяВалентинович"
+  },
+  !!str "Lesson4" : !!map {
+    !!str "Time" : !!str "11.40-13.10",
+    !!str "Parity" : !!str "YES",
+    !!str "Address" : !!str "371Кронверкскийпр.д.49лит.А",
+    !!str "Subject" : !!str "ПРОГРАММИРОВАНИЕ(Лаб)",
+    !!str "Teacher" : !!str "ПисьмакАлексейЕвгеньевич"
+  },
+  !!str "Lesson5" : !!map {
+    !!str "Time" : !!str "13.30-15.00",
+    !!str "Parity" : !!str "YES",
+    !!str "Address" : !!str "369AКронверкскийпр.д.49лит.А",
+    !!str "Subject" : !!str "ДИСКРЕТНАЯМАТЕМАТИКА(Прак)",
+    !!str "Teacher" : !!str "ПоляковВладимирИванович"
+  },
+  !!str "Lesson6" : !!map {
+    !!str "Time" : !!str "13.30-15.00",
+    !!str "Parity" : !!str "NO",
+    !!str "Address" : !!str "304Кронверкскийпр.д.49лит.А",
+    !!str "Subject" : !!str "ИНФОРМАТИКА(Лаб)",
+    !!str "Teacher" : !!str "МалышеваТатьянаяАлексеевна"
+  },
+  !!str "Lesson7" : !!map {
+    !!str "Time" : !!str "15.20-16.50",
+    !!str "Parity" : !!str "NO",
+    !!str "Address" : !!str "304Кронверкскийпр.д.49лит.А",
+    !!str "Subject" : !!str "ИНФОРМАТИКА(Лаб)",
+    !!str "Teacher" : !!str "МалышеваТатьянаяАлексеевна"
+  },
+  !!str "Lesson8" : !!map {
+    !!str "Time" : !!str "15.20-16.50",
+    !!str "Parity" : !!str "YES",
+    !!str "Address" : !!str "369AКронверкскийпр.д.49лит.А",
+    !!str "Subject" : !!str "ДИСКРЕТНАЯМАТЕМАТИКА(Прак)",
+    !!str "Teacher" : !!str "ПоляковВладимирИванович"
+  }
+}
