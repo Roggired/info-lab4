@@ -4,53 +4,25 @@ from jsonParser.KeyValuePair import KeyValuePair
 
 
 class KeyValuePairCreator:
+    KEY_RE = '\s*"\w+"'
+    VALUE_RE = '\s*"?[\w().-]+"?'
+    SYNTAX_EXCEPTION_MESSAGE = "key_value_pair_creator: синтаксическая ошибка"
+
     @staticmethod
     def create_key_value_pair(string):
         string = str(string)
 
-        if string.index(":") < 0:
-            raise SyntaxException("create_key_value_pair: синтаксическая ошибка")
+        if not KeyValuePairCreator.is_valid_key_value_pair(string):
+            raise SyntaxException(KeyValuePairCreator.SYNTAX_EXCEPTION_MESSAGE)
 
         string_set = string.split(":")
 
-        if len(string_set) > 2:
-            raise SyntaxException("create_key_value_pair: синтаксическая ошибка")
-
-        key = KeyValuePairCreator.create_key(string_set[0])
-        value = KeyValuePairCreator.create_value(string_set[1])
-
-        return KeyValuePair(key, value)
+        return KeyValuePair(string_set[0], string_set[1])
 
     @staticmethod
-    def create_key(string):
-        string = str(string)
+    def is_valid_key_value_pair(string):
+        value = re.fullmatch(KeyValuePairCreator.KEY_RE + ':' + KeyValuePairCreator.VALUE_RE, string)
 
-        if not KeyValuePairCreator.is_valid_key(string):
-            raise SyntaxException("create_key: синтаксическая ошибка.")
-
-        return string
-
-    @staticmethod
-    def is_valid_key(string):
-        value = re.fullmatch('\s*"\w+"', string)
-
-        if value:
-            return True
-
-        return False
-
-    @staticmethod
-    def create_value(string):
-        string = str(string)
-
-        if KeyValuePairCreator.is_valid_value(string):
-            return string
-
-        raise SyntaxException("create_value: синтаксическая ошибка.")
-
-    @staticmethod
-    def is_valid_value(string):
-        value = re.fullmatch('\s*"?[\w().-]+"?', string)
         if value:
             return True
 

@@ -1,4 +1,4 @@
-from jsonParser import SyntaxException
+from jsonParser.SyntaxException import SyntaxException
 from jsonParser.JSONParser import JSONParser
 from yamlConverter.YAMLConverter import YAMLConverter
 
@@ -24,8 +24,10 @@ if __name__ == "__main__":
 
     text = remove_root_braces(text)
 
-    entity_set = JSONParser.parse(text)
-    result = YAMLConverter.convert(entity_set)
+    jsonParser = JSONParser(text)
+    entity_set = jsonParser.parse()
+
+    yamlConverter = YAMLConverter(entity_set)
+    result = yamlConverter.convert()
 
     open("output\\example.yaml", mode='w', encoding='UTF-8').write(result)
-

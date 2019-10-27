@@ -6,12 +6,16 @@ from jsonParser.SyntaxException import SyntaxException
 
 
 class ObjectCreator:
+    KEY_RE = '\s*"\w+"'
+    ENTITY_RE = '\s*{[\s\S]*'
+    SYNTAX_EXCEPTION_MESSAGE = "create_object: синтаксическая ошибка"
+
     @staticmethod
     def create_object(string):
         string = str(string)
 
         if not ObjectCreator.is_valid_object(string):
-            raise SyntaxException("create_object: синтаксическая ошибка")
+            raise SyntaxException(ObjectCreator.SYNTAX_EXCEPTION_MESSAGE)
 
         name = ObjectCreator.create_name(string)
 
@@ -22,7 +26,7 @@ class ObjectCreator:
 
     @staticmethod
     def is_valid_object(string):
-        value = re.fullmatch('\s*"\w+":\s*{[\s\S]*', string)
+        value = re.fullmatch(ObjectCreator.KEY_RE + ':' + ObjectCreator.ENTITY_RE, string)
 
         if value and string[len(string) - 1] == '}':
             return True

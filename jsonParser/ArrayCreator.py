@@ -5,12 +5,16 @@ from jsonParser.Array import Array
 
 
 class ArrayCreator:
+    KEY_RE = '\s*"\w+"'
+    ENTITY_RE = '\s*\[[\s\S]*'
+    SYNTAX_EXCEPTION_MESSAGE = "create_array: синтаксическая ошибка"
+
     @staticmethod
     def create_array(string):
         string = str(string)
 
         if not ArrayCreator.is_valid_array(string):
-            raise SyntaxException("create_object: синтаксическая ошибка")
+            raise SyntaxException(ArrayCreator.SYNTAX_EXCEPTION_MESSAGE)
 
         name = ArrayCreator.create_name(string)
 
@@ -21,7 +25,7 @@ class ArrayCreator:
 
     @staticmethod
     def is_valid_array(string):
-        value = re.fullmatch('\s*"\w+":\s*\[[\s\S]*', string)
+        value = re.fullmatch(ArrayCreator.KEY_RE + ':' + ArrayCreator.ENTITY_RE, string)
 
         if value and string[len(string) - 1] == ']':
             return True

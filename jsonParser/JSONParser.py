@@ -1,62 +1,85 @@
+from jsonParser.Entity import EntityType
 from jsonParser.SyntaxException import SyntaxException
 from jsonParser.ParsingQueue import ParsingQueue
 from jsonParser.ParsingTask import ParsingTask
 
 
 class JSONParser:
+    EXTRA_PARENTHESIS_EXCEPTION = "parse: непарная квадратная скобка"
+    EXTRA_BRACE_EXCEPTION = "parse: непарная фигурная скобка"
 
-    @staticmethod
-    def parse(string):
-        parsing_queue = ParsingQueue()
-        buffer = ""
-        in_object_flag = False
-        in_array_flag = False
-        for index in range(len(string)):
-            if string[index] == '[' and not in_object_flag:
-                buffer += string[index]
-                in_array_flag = True
-                continue
+    def __init__(self,
+                 string):
+        self.parsing_queue = ParsingQueue();
+        self.buffer = ""
+        self.in_object_flag = False
+        self.in_array_flag = False
+        self.string = string
 
-            if string[index] == ']' and not in_object_flag:
-                if not in_array_flag:
-                    raise SyntaxException("parse: непарная квадратная скобка")
+    def parse(self):
+        for index in range(len(self.string)):
+            symbol = self.string[index]
+            self.buffer += symbol
 
-                buffer += string[index]
-                task = ParsingTask(buffer, "array")
-                buffer = ""
-                parsing_queue.add_task(task)
-                in_array_flag = False
-                continue
+            self.if_left_parenthesis(symbol)
+            self.if_right_parenthesis(symbol)
+            self.if_left_brace(symbol)
+            self.if_right_brace(symbol)
 
-            if string[index] == '{' and not in_array_flag:
-                buffer += string[index]
-                in_object_flag = True
-                continue
+            if not self.in_object_flag and not self.in_array_flag:
+                self.if_comma(symbol)
 
-            if string[index] == '}' and not in_array_flag:
-                if not in_object_flag:
-                    raise SyntaxException("parse: непарная скобка")
+            self.if_end_of_string(index)
 
-                buffer += string[index]
-                task = ParsingTask(buffer, "object")
-                buffer = ""
-                parsing_queue.add_task(task)
-                in_object_flag = False
-                continue
+        return self.parsing_queue.execute()
 
-            if string[index] == ',' and not in_object_flag and not in_array_flag:
-                if buffer != "":
-                    task = ParsingTask(buffer, "row")
-                    buffer = ""
-                    parsing_queue.add_task(task)
+    def if_left_parenthesis(self, symbol):
+        if symbol == '[':
+            self.in_array_flag = True
 
-                continue
+    def if_right_parenthesis(self, symbol):
+        if symbol == ']':
+            if not self.in_array_flag:
+                raise SyntaxException(self.EXTRA_PARENTHESIS_EXCEPTION)
 
-            if index == len(string) - 1:
-                task = ParsingTask(buffer, "row")
-                buffer = ""
-                parsing_queue.add_task(task)
+            self.create_task(EntityType.ARRAY)
 
-            buffer += string[index]
+            self.in_array_flag = False
 
-        return parsing_queue.execute()
+    def if_left_brace(self, symbol):
+        if symbol == '{':
+            self.in_object_flag = True
+
+    def if_right_brace(self, symbol):
+        if symbol == '}':
+            if not self.in_object_flag:
+                raise SyntaxException(self.EXTRA_BRACE_EXCEPTION)
+
+            self.create_task(EntityType.OBJECT)
+
+            self.in_object_flag = False
+
+    def if_comma(self, symbol):
+        if symbol == ',':
+            self.delete_last_symbol_from_buffer()
+            if not self.buffer_is_empty():
+                self.create_task(EntityType.KEY_VALUE_PAIR)
+
+    def if_end_of_string(self, index):
+        if index == len(self.string) - 1 and not self.buffer_is_empty():
+            self.create_task("row")
+
+    def create_task(self,
+                    task_type):
+        task = ParsingTask(self.buffer, task_type)
+        self.parsing_queue.add_task(task)
+        self.buffer = ""
+
+    def delete_last_symbol_from_buffer(self):
+        self.buffer = self.buffer[0:len(self.buffer) - 1]
+
+    def buffer_is_empty(self):
+        if self.buffer == "":
+            return True
+
+        return False
